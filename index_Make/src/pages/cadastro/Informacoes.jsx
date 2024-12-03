@@ -64,31 +64,12 @@ const Informacoes = () => {
 
   // Função de envio do formulário
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
-
   const onSubmit = async (event) => {
     event.preventDefault();
     set_btnLoading_Submit(true);
 
     try {
       console.log("Enviando dados:", {
-        email,
-        senha,
-        nome,
-        tel,
-        estado,
-        cidade,
-        bairro,
-        rua,
-        numero,
-        empresa,
-        dataNascimento,
-        user,
-      });
-
-      const response = await axios.post(
-        "http://localhost:3001/api/cadastro",
-        {
           email,
           senha,
           nome,
@@ -100,16 +81,32 @@ const Informacoes = () => {
           numero,
           empresa,
           dataNascimento,
-          user,
-        },
-        {
-          timeout: 15000,
-          headers: {
-            "Content-Type": "application/json",
+          user
+      });
+  
+      const response = await axios({
+          method: 'post',
+          url: 'http://localhost/tcc2/tcc_Make/hubflow/Backend/api/cadastro.php',
+          data: {
+              email,
+              senha,
+              nome,
+              tel,
+              estado,
+              cidade,
+              bairro,
+              rua,
+              numero,
+              empresa,
+              dataNascimento,
+              user
           },
-        }
-      );
-
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          withCredentials: true
+      });
+  
       console.log("Resposta do servidor:", response.data);
 
       authLogin.getState().login({
@@ -125,7 +122,7 @@ const Informacoes = () => {
       navigate("/");
       // resetEtapa();
     } catch (err) {
-      console.error("Erro ao criar usuário:", err);
+      console.error("Erro ao criar usuário:", err); 
       if (err.response) {
         console.error("Erro do servidor:", err.response.data);
       }

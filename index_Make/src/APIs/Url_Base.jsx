@@ -1,8 +1,11 @@
-// src/api/axios.js
 import axios from 'axios';
 
-const urlBase = axios.create({
-  baseURL: 'https://localhost:3001/api/',
+const api = axios.create({
+    baseURL: 'http://localhost/tcc2/tcc_Make/hubflow/Backend/',
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json'
+    }
 });
 
-export default urlBase;
+export default api;

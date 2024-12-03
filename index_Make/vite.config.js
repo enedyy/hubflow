@@ -9,13 +9,19 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // server: {
-  //   proxy: {
-  //     '/apiVia_Cep': {
-  //       target: 'https://viacep.com.br',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/apiVia_Cep/, '')
-  //     }
-  //   }
-  // }
+  server: {
+    proxy: {
+      '/apiVia_Cep': {
+        target: 'https://viacep.com.br',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/apiVia_Cep/, '')
+      },
+      '/api': {
+        target: 'http://localhost/Backend',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      }
+    }
+  }
 })

@@ -1,4 +1,3 @@
-# Habilita o PHP para arquivos .php
 <Files "*.php">
     SetHandler application/x-httpd-php
 </Files>

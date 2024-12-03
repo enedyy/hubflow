@@ -1,3 +1,4 @@
+// Backend/models/Cliente.php
 <?php
 class Cliente {
     private $conn;
@@ -23,20 +24,33 @@ class Cliente {
 
         $stmt = $this->conn->prepare($query);
 
+        // Limpa e sanitiza os dados
+        $this->nome = htmlspecialchars(strip_tags($this->nome));
+        $this->endereco = htmlspecialchars(strip_tags($this->endereco));
+        $this->telefone = htmlspecialchars(strip_tags($this->telefone));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->dataNascimento = htmlspecialchars(strip_tags($this->dataNascimento));
+
+        // Vincula os parâmetros
         $stmt->bindParam(':nome', $this->nome);
         $stmt->bindParam(':endereco', $this->endereco);
         $stmt->bindParam(':telefone', $this->telefone);
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':dataNascimento', $this->dataNascimento);
 
-        if($stmt->execute()) {
-            $this->clienteId = $this->conn->lastInsertId();
-            return true;
+        try {
+            if($stmt->execute()) {
+                $this->clienteId = $this->conn->lastInsertId();
+                return true;
+            }
+            return false;
+        } catch (PDOException $e) {
+            error_log("Erro ao criar cliente: " . $e->getMessage());
+            throw new Exception("Erro ao criar cliente no banco de dados");
         }
-        return false;
     }
 
-    public function vincularUsuario($usuarioId) {
+    public function atualizarUsuarioId($usuarioId) {
         $query = "UPDATE " . $this->table_name . " 
                   SET UsuarioID = :usuarioId 
                   WHERE ClienteID = :clienteId";

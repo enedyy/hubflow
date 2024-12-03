@@ -69,45 +69,46 @@ const Informacoes = () => {
     set_btnLoading_Submit(true);
 
     try {
-      console.log("Enviando dados:", {
-          email,
-          senha,
-          nome,
-          tel,
-          estado,
-          cidade,
-          bairro,
-          rua,
-          numero,
-          empresa,
-          dataNascimento,
-          user
-      });
-  
-      const response = await axios({
-          method: 'post',
-          url: 'http://localhost/tcc2/tcc_Make/hubflow/Backend/api/cadastro.php',
-          data: {
-              email,
-              senha,
-              nome,
-              tel,
-              estado,
-              cidade,
-              bairro,
-              rua,
-              numero,
-              empresa,
-              dataNascimento,
-              user
-          },
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          withCredentials: true
-      });
-  
-      console.log("Resposta do servidor:", response.data);
+        console.log("Enviando dados:", {
+            email,
+            senha,
+            nome,
+            tel,
+            estado,
+            cidade,
+            bairro,
+            rua,
+            numero,
+            empresa,
+            dataNascimento,
+            user
+        });
+
+        const response = await axios.post(
+            'http://localhost/tcc2/tcc_Make/hubflow/Backend/api/cadastro.php', // URL completa para o seu backend
+            {
+                email,
+                senha,
+                nome,
+                tel,
+                estado,
+                cidade,
+                bairro,
+                rua,
+                numero,
+                empresa,
+                dataNascimento,
+                user
+            },
+            {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log("Resposta do servidor:", response.data);
 
       authLogin.getState().login({
         id:

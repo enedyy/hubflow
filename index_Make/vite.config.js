@@ -17,11 +17,11 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/apiVia_Cep/, '')
       },
       '/api': {
-        target: 'http://localhost/Backend',
+        target: 'http://localhost/tcc2/tcc_Make/hubflow/Backend',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       }
     }
   }
-})
+})  

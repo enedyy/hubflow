@@ -50,6 +50,7 @@ const PerfilEmpresa = () => {
   const increaseLimitCards = () => setLimitCards((prev) => prev + 6);
   const resetLimitCards = () => setLimitCards(6);
 
+  // ----- SERVICOS --------
   // PARA EDIÇÃO DOS SERVICOS
   const [editedService, setEditedService] = useState({
     id: "",
@@ -60,9 +61,15 @@ const PerfilEmpresa = () => {
   });
   const handleEditClick = (service) => setEditedService(service);
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedService((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+
+    if (name === "img" && files.length > 0) {
+      setEditedService((prev) => ({ ...prev, img: files[0] }));
+    } else {
+      setEditedService((prev) => ({ ...prev, [name]: value }));
+    }
   };
+  // ---> ALTERAR A API <-----
   const editService = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -70,6 +77,7 @@ const PerfilEmpresa = () => {
       await axios.put(
         `https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/${editedService.id}`,
         {
+          img: editedService.img,
           nome: editedService.nome,
           description: editedService.description,
           value: editedService.value,
@@ -97,8 +105,13 @@ const PerfilEmpresa = () => {
   });
   const createInputChange = (e) => {
     const { name, value } = e.target;
-    setCreatedServices((prev) => ({ ...prev, [name]: value }));
+    if (name === "img" && files.length > 0) {
+      setCreatedServices((prev) => ({ ...prev, img: files[0] }));
+    } else {
+      setCreatedServices((prev) => ({ ...prev, [name]: value }));
+    }
   };
+  // ---> ALTERAR API <-----
   const createService = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -123,7 +136,7 @@ const PerfilEmpresa = () => {
     }
   };
 
-  // PARA DELETAR SERVICO
+  // PARA DELETAR SERVICO ---> ALTERAR API <-----
   const deleteService = async (serviceId) => {
     setIsLoading(true);
     try {
@@ -132,6 +145,109 @@ const PerfilEmpresa = () => {
       );
       setServices((prevServices) =>
         prevServices.filter((service) => service.id !== serviceId)
+      );
+    } catch (error) {
+      console.log("Erro ao atualizar o serviço: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // --------- FUNCIONARIOS ------------
+  // CRIAR FUNCIONARIO
+  const [createdFuncionario, setCreatedFuncionario] = useState({
+    img: "",
+    nome: "",
+    description: "",
+    function: "",
+  });
+  const createInputFuncionario = (e) => {
+    const { name, value } = e.target;
+    if (name === "img" && files.length > 0) {
+      setCreatedFuncionario((prev) => ({ ...prev, img: files[0] }));
+    } else {
+      setCreatedFuncionario((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+  const createFuncionario = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const newFuncionario = {
+        img: createdFuncionario.img,
+        nome: createdFuncionario.nome,
+        description: createdFuncionario.description,
+        function: createdFuncionario.function,
+      };
+
+      const { data } = await axios.post(
+        "https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/",
+        newFuncionario
+      );
+      setServices((prevServices) => [...prevServices, data]);
+      setCreatedFuncionario({
+        img: "",
+        nome: "",
+        description: "",
+        function: "",
+      });
+    } catch (error) {
+      console.log("Erro ao atualizar o serviço: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // EDITAR FUNCIONARIO
+  const [editedFuncionario, setEditedFuncionario] = useState({
+    id: "",
+    img: "",
+    nome: "",
+    description: "",
+    function: "",
+  });
+  const editFuncionarioClick = (funcio) => setEditedFuncionario(funcio);
+  const handleEditFuncionario = (e) => {
+    const { name, value } = e.target;
+    setEditedFuncionario((prev) => ({ ...prev, [name]: value }));
+  };
+  // ----> ALTERAR API <---------
+  const editFuncionario = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      await axios.put(
+        `https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/${editedFuncionario.id}`,
+        {
+          img: editedFuncionario.img,
+          nome: editedFuncionario.nome,
+          description: editedFuncionario.description,
+          function: editedFuncionario.function,
+        }
+      );
+      // Atualize a lista de serviços localmente
+      setServices((prevServices) =>
+        prevServices.map((service) =>
+          service.id === editedFuncionario.id ? editedFuncionario : service
+        )
+      );
+    } catch (error) {
+      console.log("Erro ao atualizar o serviço: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // PARA DELETAR SERVICO ---> ALTERAR API <-----
+  const deleteFuncionario = async (funcioId) => {
+    setIsLoading(true);
+    try {
+      await axios.delete(
+        `https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/${funcioId}`
+      );
+      // ALTERAR PARA ESTADO DOS SERVICOS
+      setServices((prevServices) =>
+        prevServices.filter((service) => service.id !== funcioId)
       );
     } catch (error) {
       console.log("Erro ao atualizar o serviço: ", error);
@@ -197,25 +313,17 @@ const PerfilEmpresa = () => {
                     size="lg"
                     variant="outline"
                   >
-                    Editar imagens
+                    Editar imagem
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle className="text-colorPrimary text-xl">
-                      Edite as imagens da sua empresa
+                      Edite a imagem da sua empresa
                     </DialogTitle>
                   </DialogHeader>
 
-                  <div>
-                    <Label>Sua foto</Label>
-                    <Input type="file" />
-                  </div>
-
-                  <div>
-                    <Label>Foto empresa</Label>
-                    <Input type="file" />
-                  </div>
+                  <Input type="file" />
 
                   <Button variant="primary" disabled={isLoading}>
                     {isLoading ? "Alterando..." : "Alterar"}
@@ -227,7 +335,7 @@ const PerfilEmpresa = () => {
               <section className="flex items-center w-full gap-20">
                 <div className="w-52 h-52 max-sm:hidden">
                   <img
-                    src={gabi}
+                    src={perfil.img}
                     alt=""
                     className="w-full h-full rounded-full object-cover border-4 border-colorBack"
                   />
@@ -452,6 +560,14 @@ const PerfilEmpresa = () => {
                 </DialogHeader>
                 <form className="flex flex-col gap-4" onSubmit={createService}>
                   <div>
+                    <Label>Imagem</Label>
+                    <Input
+                      type="file"
+                      name="img"
+                      onChange={createInputChange}
+                    />
+                  </div>
+                  <div>
                     <Label>Nome do serviço</Label>
                     <Input
                       name="nome"
@@ -460,16 +576,6 @@ const PerfilEmpresa = () => {
                       maxLength={40}
                     />
                   </div>
-
-                  {/* <div>
-                <Label>Imagem</Label>
-                <Input
-                  type="file"
-                  name="img"
-                  value={createdServices.img}
-                  onChange={createInputChange}
-                />
-              </div> */}
 
                   <div>
                     <Label>Descrição</Label>
@@ -509,7 +615,6 @@ const PerfilEmpresa = () => {
                   {/* IMAGEM */}
                   <div className="w-2/5 h-48 max-sm:w-full max-sm:h-44">
                     <img
-                      // src={item.img === "" ? imgRascunho : item.img}
                       src={imgService}
                       alt="imagem não encontrada"
                       className="w-full h-full object-cover rounded"
@@ -535,8 +640,8 @@ const PerfilEmpresa = () => {
                         Valor: R$ {item.value},00
                       </Label>
                     </div>
+                    {/* CARD PARA ATUALIZAR SERVICO */}
                     <div className="flex gap-2 justify-end">
-                      {/* CARD PARA ATUALIZAR SERVICO */}
                       <Dialog>
                         <DialogTrigger>
                           <Button
@@ -556,8 +661,18 @@ const PerfilEmpresa = () => {
                           </DialogHeader>
                           <form
                             className="flex flex-col gap-4"
-                            // onSubmit={editService}
+                            onSubmit={editService}
                           >
+                            {/* CAMPOS PARA AS INFORMACOES SERVICO */}
+                            <div>
+                              <Label>Imagem</Label>
+                              <Input
+                                type="file"
+                                name="img"
+                                onChange={handleInputChange}
+                              />
+                            </div>
+
                             <div>
                               <Label>Nome do serviço</Label>
                               <Input
@@ -702,9 +817,9 @@ const PerfilEmpresa = () => {
             </Button>
           )}
 
+          {/* CARD PARA CRIAR SERVICO */}
           <div className="w-full flex justify-between items-center">
             <Label size="subtitle">Meus Funcionários</Label>
-            {/* CARD PARA CRIAR SERVICO */}
             <Dialog>
               <DialogTrigger>
                 <Button size="lg" variant="variantOutline">
@@ -725,37 +840,38 @@ const PerfilEmpresa = () => {
                   </svg>
                 </Button>
               </DialogTrigger>
-              <DialogContent>
-                <form className="flex flex-col gap-4" onSubmit={createService}>
+              <DialogContent className="max-sm:w-4/5 rounded-md">
+                <form
+                  className="flex flex-col gap-4"
+                  onSubmit={createFuncionario}
+                >
                   <Label className="mb-0 text-3xl font-semibold">
                     Adicione um funcionário
                   </Label>
+                  <div>
+                    <Label>Imagem</Label>
+                    <Input
+                      name="img"
+                      type="file"
+                      onChange={createInputFuncionario}
+                    />
+                  </div>
 
                   <div>
                     <Label>Nome</Label>
                     <Input
                       name="nome"
-                      value={createdServices.nome}
-                      onChange={createInputChange}
+                      value={createdFuncionario.nome}
+                      onChange={createInputFuncionario}
                     />
                   </div>
-
-                  {/* <div>
-                <Label>Imagem</Label>
-                <Input
-                  type="file"
-                  name="img"
-                  value={createdServices.img}
-                  onChange={createInputChange}
-                />
-              </div> */}
 
                   <div>
                     <Label>Função: </Label>
                     <Input
-                      name="value"
-                      value={createdServices.value}
-                      onChange={createInputChange}
+                      name="function"
+                      value={createdFuncionario.function}
+                      onChange={createInputFuncionario}
                     />
                   </div>
 
@@ -763,8 +879,8 @@ const PerfilEmpresa = () => {
                     <Label>Descrição</Label>
                     <Textarea
                       name="description"
-                      value={createdServices.description}
-                      onChange={createInputChange}
+                      value={createdFuncionario.description}
+                      onChange={createInputFuncionario}
                       className="h-40"
                     />
                   </div>
@@ -779,147 +895,157 @@ const PerfilEmpresa = () => {
 
           <section className="w-full grid gap-6 grid-cols-2 max-sm:grid-cols-1">
             {/* INFORMACOES FUNCIONARIOS */}
-            <div
-              // key={item.id}
-              className="bg-colorPrimary flex items-center justify-between w-full h-full rounded-md py-4 px-6 shadow-lg max-sm:p-4 max-sm:gap-4"
-            >
-              {/* IMAGEM */}
-              <div className="w-40 h-40 max-sm:h-28 max-sm:w-28">
-                <img
-                  // src={item.img === "" ? imgRascunho : item.img}
-                  src={funcionario}
-                  alt="imagem não encontrada"
-                  className="w-full h-full object-cover rounded-full border-4"
-                />
-              </div>
-
-              {/* INFORMACOES SERVICO */}
-              <div className="w-3/5 h-full flex flex-col gap-1 justify-between max-sm:w-8/12">
-                <div className="flex flex-col gap-2 max-sm:gap-2">
-                  <Label
-                    color="white"
-                    className="text-2xl max-sm:text-lg font-bold capitalize overflow-hidden text-ellipsis line-clamp-2"
-                  >
-                    {/* {item.nome} */}
-                    Eduardo Machado
-                  </Label>
-                  <Label
-                    color="white"
-                    className="overflow-hidden text-ellipsis line-clamp-3 max-sm:line-clamp-2"
-                  >
-                    {/* {item.description} */}
-                    Função: Barbeiro
-                  </Label>
+            {services.map((item) => (
+              <div
+                key={item.id}
+                className="bg-colorPrimary flex items-center justify-between w-full h-full rounded-md py-4 px-6 shadow-lg max-sm:p-4 max-sm:gap-4"
+              >
+                {/* IMAGEM */}
+                <div className="w-40 h-40 max-sm:h-28 max-sm:w-28">
+                  <img
+                    src={funcionario}
+                    alt="imagem não encontrada"
+                    className="w-full h-full object-cover rounded-full border-4"
+                  />
                 </div>
 
-                <div className="w-full flex gap-2 justify-end">
-                  {/* CARD PARA ATUALIZAR SERVICO */}
-                  <Dialog>
-                    <DialogTrigger>
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="max-sm:w-full px-7"
-                        // onClick={() => handleEditClick(item)}
-                      >
-                        Editar funcionário
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="w-3/5">
-                      <form
-                        className="flex flex-col gap-4"
-                        // onSubmit={editService}
-                      >
-                        <Label className="mb-0 text-3xl font-semibold">
-                          Edite o seu funcionário
-                        </Label>
+                {/* INFORMACOES SERVICO */}
+                <div className="w-3/5 h-full flex flex-col gap-1 justify-between max-sm:w-8/12">
+                  <div className="flex flex-col gap-2 max-sm:gap-2">
+                    <Label
+                      color="white"
+                      className="text-2xl max-sm:text-lg font-bold capitalize overflow-hidden text-ellipsis line-clamp-2"
+                    >
+                      {item.nome}
+                    </Label>
+                    <Label
+                      color="white"
+                      className="overflow-hidden text-ellipsis line-clamp-1"
+                    >
+                      {item.function}
+                    </Label>
+                    <Label
+                      color="white"
+                      className="overflow-hidden text-ellipsis line-clamp-2"
+                    >
+                      {item.description}
+                    </Label>
+                  </div>
 
-                        <div>
-                          <Label>Nome</Label>
-                          <Input
-                            name="nome"
-                            value={editedService.nome}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-
-                        <div>
-                          <Label>Função</Label>
-                          <Input
-                            name="value"
-                            value={editedService.value}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-
-                        <div>
-                          <Label>Descrição</Label>
-                          <Textarea
-                            name="description"
-                            value={editedService.description}
-                            onChange={handleInputChange}
-                            className="h-40"
-                          />
-                        </div>
-
+                  <div className="w-full flex gap-2 justify-end">
+                    {/* CARD PARA ATUALIZAR SERVICO */}
+                    <Dialog>
+                      <DialogTrigger>
                         <Button
-                          onClick={editService}
-                          variant="primary"
-                          disabled={isLoading}
+                          size="lg"
+                          variant="outline"
+                          className="max-sm:w-full px-7"
+                          onClick={() => editFuncionarioClick(item)}
                         >
-                          {isLoading ? "Atualizando..." : "Atualizar"}
+                          Editar funcionário
                         </Button>
-                      </form>
-                    </DialogContent>
-                  </Dialog>
+                      </DialogTrigger>
+                      <DialogContent className="max-sm:w-4/5 rounded-md">
+                        <form className="flex flex-col gap-4">
+                          <Label className="mb-0 text-3xl font-semibold">
+                            Edite o seu funcionário
+                          </Label>
 
-                  {/* CARD PARA EXCLUIR SERVICO */}
-                  <Dialog>
-                    <DialogTrigger>
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        className="max-sm:w-full sm:hover:bg-red-500 sm:hover:text-slate-50"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                          />
-                        </svg>
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <Label className="text-xl">
-                        Tem certeza que deseja excluir este funcionário?
-                      </Label>
-                      {/* <Input disabled value={item.nome} /> */}
-                      <div className="flex gap-2 justify-end">
-                        <DialogClose>
+                          <div>
+                            <Label>Imagem</Label>
+                            <Input
+                              name="img"
+                              type="file"
+                              onChange={handleEditFuncionario}
+                            />
+                          </div>
+                          <div>
+                            <Label>Nome</Label>
+                            <Input
+                              name="nome"
+                              value={editedFuncionario.nome}
+                              onChange={handleEditFuncionario}
+                            />
+                          </div>
+
+                          <div>
+                            <Label>Função</Label>
+                            <Input
+                              name="function"
+                              value={editedFuncionario.function}
+                              onChange={handleEditFuncionario}
+                            />
+                          </div>
+
+                          <div>
+                            <Label>Descrição</Label>
+                            <Textarea
+                              name="description"
+                              value={editedFuncionario.description}
+                              onChange={handleEditFuncionario}
+                              className="h-40"
+                            />
+                          </div>
+
                           <Button
-                            variant="destructive"
-                            // onClick={() => deleteService(item.id)}
+                            onClick={editFuncionario}
+                            variant="primary"
+                            disabled={isLoading}
                           >
-                            Excluir Funcionário
+                            {isLoading ? "Atualizando..." : "Atualizar"}
                           </Button>
-                        </DialogClose>
-                        <DialogClose>
-                          <Button>Cancelar</Button>
-                        </DialogClose>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                        </form>
+                      </DialogContent>
+                    </Dialog>
+
+                    {/* CARD PARA EXCLUIR SERVICO */}
+                    <Dialog>
+                      <DialogTrigger>
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          className="max-sm:w-full sm:hover:bg-red-500 sm:hover:text-slate-50"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                            />
+                          </svg>
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <Label className="text-xl">
+                          Tem certeza que deseja excluir este funcionário?
+                        </Label>
+                        {/* <Input disabled value={item.nome} /> */}
+                        <div className="flex gap-2 justify-end">
+                          <DialogClose>
+                            <Button
+                              variant="destructive"
+                              onClick={() => deleteFuncionario(item.id)}
+                            >
+                              Excluir Funcionário
+                            </Button>
+                          </DialogClose>
+                          <DialogClose>
+                            <Button>Cancelar</Button>
+                          </DialogClose>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </section>
         </main>
       )}

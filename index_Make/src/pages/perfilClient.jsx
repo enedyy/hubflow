@@ -45,6 +45,8 @@ const PerfilClient = () => {
     if (user.tipoUser === "admin") {
       navigate("/");
     }
+
+    // BUSCA O CLIENTE
     const getClient = async () => {
       setIsLoading(true);
       try {
@@ -55,6 +57,7 @@ const PerfilClient = () => {
         setIsLoading(false);
       }
     };
+    // BUSCA AGENDAMENTOS DO CLIENTE
     const getServices = async () => {
       setIsLoading(true);
       try {
@@ -75,13 +78,17 @@ const PerfilClient = () => {
   // EXCLUI AGENDAMENTO
   const deleteService = async () => {
     try {
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // ALTERA PERFIL
   const updatePerfil = async () => {
     try {
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -124,15 +131,24 @@ const PerfilClient = () => {
                           Edite as suas informações
                         </DialogTitle>
                       </DialogHeader>
-
-                      <Input
-                        value={services.nome}
-                        placeholder="seu nome completo"
-                      />
-                      <Input
-                        value={services.endereco}
-                        placeholder="seu endereco"
-                      />
+                      <div>
+                        <Label>Sua foto</Label>
+                        <Input type="file" />
+                      </div>
+                      <div>
+                        <Label>Sua nome completo</Label>
+                        <Input
+                          value={services.nome}
+                          placeholder="seu nome completo"
+                        />
+                      </div>
+                      <div>
+                        <Label>Seu endereco</Label>
+                        <Input
+                          value={services.endereco}
+                          placeholder="seu endereco"
+                        />
+                      </div>
 
                       <Button variant="primary" onClick={updatePerfil}>
                         Atualizar

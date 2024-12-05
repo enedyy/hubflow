@@ -1,3 +1,0 @@
-<Files "*.php">
-    SetHandler application/x-httpd-php
-</Files>

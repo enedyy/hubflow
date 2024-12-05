@@ -19,21 +19,23 @@ const Informacoes = () => {
   const navigate = useNavigate();
   const { resetEtapa, etapa } = authProtecao_Rotas();
   const {
-    email,
-    nome,
-    tel,
+          email,
+          nome,
+          tel,
+          dataNascimento,
 
-    cep, // verificar isso
+          cep, // verificar isso.
 
-    numero,
-    senha,
-    estado,
-    cidade,
-    bairro,
-    rua,
-    empresa,
-    user,
-    dataNascimento,
+          numero,
+          senha,
+          empresa,
+          user,
+          estado,
+          cidade,
+          bairro,
+          rua,
+          cpf,
+          cnpj
   } = authCadastro();
 
   // Mostrar/Ocultar senha
@@ -42,19 +44,21 @@ const Informacoes = () => {
   // Função para limpar os dados do cadastro
   const limparDadosCadastro = () => {
     const campos = [
-      "email",
-      "senha",
-      "user",
-      "nome",
-      "tel",
-      "dataNascimento",
-      "cep",
-      "numero",
-      "empresa",
-      "estado",
-      "cidade",
-      "bairro",
-      "rua",
+    "email",
+    "nome",
+    "tel",
+    "dataNascimento",
+    "cep",
+    "numero",
+    "senha",
+    "empresa",
+    "user",
+    "estado",
+    "cidade",
+    "bairro",
+    "rua",
+    "cpf",
+    "cnpj"
     ];
 
     campos.forEach((campo) => {
@@ -70,55 +74,61 @@ const Informacoes = () => {
 
     try {
         console.log("Enviando dados:", {
-            email,
-            senha,
-            nome,
-            tel,
-            estado,
-            cidade,
-            bairro,
-            rua,
-            numero,
-            empresa,
-            dataNascimento,
-            user
+          email,
+          nome,
+          tel,
+          dataNascimento,
+          cep,
+          numero,
+          senha,
+          empresa,
+          user,
+          estado,
+          cidade,
+          bairro,
+          rua,
+          cpf,
+          cnpj
         });
 
-        const response = await axios.post(
-            'http://localhost/tcc2/tcc_Make/hubflow/Backend/api/cadastro.php', // URL completa para o seu backend
-            {
-                email,
-                senha,
-                nome,
-                tel,
-                estado,
-                cidade,
-                bairro,
-                rua,
-                numero,
-                empresa,
-                dataNascimento,
-                user
-            },
-            {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
+        // const response = await axios.post('http://localhost/tcc2/tcc_Make/hubflow/Backend/api/cadastro.php', 
+          const response = await axios.post('http://192.168.1.216/api_vazia/users', 
+      JSON.stringify({
+        email,
+        nome,
+        tel,
+        dataNascimento,
+        cep,
+        numero,
+        senha,
+        empresa,
+        user,
+        estado,
+        cidade,
+        bairro,
+        rua,
+        cpf: null,
+        cnpj
+      }),
+      {
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          withCredentials: true
+      }
+  );
 
         console.log("Resposta do servidor:", response.data);
 
-      authLogin.getState().login({
-        id:
-          user === "cliente"
-            ? response.data.clienteId
-            : response.data.empresaId,
-        email,
-        nome,
-        tipoUser: user,
-      });
+      // authLogin.getState().login({
+      //   id:
+      //     user === "cliente"
+      //       ? response.data.clienteId
+      //       : response.data.empresaId,
+      //   email,
+      //   nome,
+      //   tipoUser: user,
+      // });
 
       navigate("/");
       // resetEtapa();

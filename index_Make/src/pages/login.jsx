@@ -30,7 +30,7 @@ const Login = () => {
    event.preventDefault();
 
    // Função para validar email usando regex
-   const isValidEmail = (email) => {
+   const isValidEmail = (email) => {  
      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
      return regex.test(email);
    };
@@ -50,7 +50,7 @@ const Login = () => {
 
    try {
     const response = await Promise.race([
-      axios.post('http://localhost/tcc2/tcc_Make/hubflow/Backend/api/Usuarios/login.php', {
+      axios.post('http://localhost/hub/hubflow/hubflow/Backend/api/Usuarios/login.php', {
         email: email,
         senha: senha
       }, {

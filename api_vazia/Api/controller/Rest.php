@@ -26,9 +26,9 @@ class Rest
             $this->classe = substr(ucfirst($novaUrl[0]), 0, -1) . "Controller";
             array_shift($novaUrl);
 
-            if (isset($novaUrl[0])) {
-                $this->parametros = $novaUrl;
-            }
+            // if (isset($novaUrl[0])) {
+            //     $this->parametros = $novaUrl;
+            // }
         }
     }
 
@@ -36,9 +36,9 @@ class Rest
     {
         if (class_exists("Api\controller\in_bound\\" . $this->classe)) {
             try {
-                // if ($this->classe === "AutenticacaoController") {
-                //     return json_encode(AutenticacaoController::authenticar());
-                // }
+                if ($this->classe === "AutenticacaoController") {
+                    return json_encode(AutenticacaoController::authenticar());
+                }
                
                 // if (AutenticacaoController::autorizar() === false) {
                 //     MensagensUtil::acessoNegado();

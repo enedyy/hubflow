@@ -4,22 +4,43 @@ namespace Api\controller\in_bound;
 
 
 use Api\config\Sessao;
+use Api\database\mysql\dao\UserDAO;
+use Api\database\mysql\model\User;
 use Api\util\MensagensUtil;
 
 
 class AutenticacaoController
 {
-    private static $authKey = "";
+    private static $authKey = "tccetec";
 
     public static function authenticar()
     {
-    
+
+        $requestValue = file_get_contents("php://input");
+        $json = json_decode($requestValue, TRUE);
+
+            // Pegando variaveis vinda do front end    
+            $user = new User();
+            $user->email = $json["email"];
+            $user->senha = $json["senha"];
+
+            //Buscar um usuario pelo e-mail 
+            $userDAO = new UserDAO();
+            $usuario = $userDAO->getByEmail($user->email);
+
+            // Verificar a senha
+            if(!password_verify($user->senha, $usuario->Senha)){
+                MensagensUtil::acessoNegado("Senha invaldia");
+            }
+
             $header = [
                 "typ"=> "JWT",
                 "alg"=> "HS256"
             ];
 
-            $payload = [];
+            $payload = [
+                "email"=> $user->email
+            ];
 
             //JSON
             $header = json_encode($header);
@@ -66,6 +87,8 @@ class AutenticacaoController
             $valid = base64_encode($valid);
 
             if ($sign === $valid) {
+                $payl = json_decode(base64_decode($payload));
+
                 return true;
             }
         }

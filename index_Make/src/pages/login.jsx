@@ -50,7 +50,7 @@ const Login = () => {
 
    try {
     const response = await Promise.race([
-      axios.post('http://localhost/hub/hubflow/hubflow/Backend/api/Usuarios/login.php', {
+      axios.post('http://192.168.1.216/hub/hubflow/hubflow/api_vazia/autenticacaos', {
         email: email,
         senha: senha
       }, {
@@ -66,7 +66,7 @@ const Login = () => {
      if (response?.data) {
        // Atualiza o estado de login com os dados do usuário
        stateLogin(response.data);
-       navigate("/main");
+       navigate("/meu-perfil");
      } else {
        setErro("Resposta inválida do servidor");
      }

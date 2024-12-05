@@ -14,6 +14,8 @@
         public $funcionarioId;
 
         public function getHashSenha(){
+            // md5
+            // hash_hmac
             return password_hash($this->senha, PASSWORD_DEFAULT);
         }
     

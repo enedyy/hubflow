@@ -34,6 +34,7 @@ A classe tem que seguir o mesmo nome do arquivo
 ```php
 <?php
     //Não esquecer no namespace
+
     class ProdutoController{}
 ```
 <hr>
@@ -55,6 +56,7 @@ Dentro dessa classe deve se conter uma função publica com o metodo HTTP que de
 ```php
 <?php
     //Não esquecer no namespace
+
     class ProdutoController{
         public function GET(){}
     }
@@ -73,6 +75,7 @@ O **1** vai ser tratado como parametro e pode ser pego da seguinte maneira
 ```php
 <?php
     //Não esquecer no namespace
+
     class ProdutoController{
         public function GET($parametro = null){
             echo $parametro; //Neste exemplo aqui será printado o 1
@@ -106,3 +109,108 @@ A função das controller além de que são elas que definem as rotas da API, el
 <hr>
 
 ### Service
+
+As classes de serviço, são cada uma das funções que a Api pode executar, seja de buscar, cadastrar, atualizar. Ela trata os dados e chama as classes de manipulaçãod e dados, que serão explicadas mais a frente nesta documentação.
+
+As funções criadas dentro desta classe são utilizadas pelas controllers como foi mostrado no exemploa  cima. Não esquecer que o arquivo e a classe tem que ter o mesmo nome.
+
+```php
+<?php
+    //Não esquecer no namespace
+
+    class ProdutoService{
+        // Exemplo de um serviço
+        public function cadastrar(){
+            // Aqui pode se usar uma ou mais funções de manipulação ao banco de dados.
+        }
+
+        // Mais funções se necessarias ....
+    }
+```
+
+### Database
+
+Esta pasta contem duas pastas os **Models** e os **DAOs** (Data Access Object | Objeto de Acesso a Dados).
+
+Os Models são nossos modelos de tabelas, são classes simples que utilizamos para mover dados do service para os DAO e retornalos também.
+
+***Model***
+
+```php
+<?php
+    //Não esquecer no namespace
+
+    class Produto{
+        public $id;
+        public $nome;
+        public $preco;
+    }
+```
+
+E temos as classe sde manipulação ao banco de dados, elas quer vão abrir a conexão e executar as Querys necessarias.
+
+
+***DAO***
+```php
+<?php
+    //Não esquecer no namespace
+
+    class ProdutoDAO{
+        public function insert(Produto $produto){
+            // Toda parte de relacioanda ao banco de dados
+        }
+
+        public function delete($id){
+            // Seu código para deletar produto aqui ....
+        }
+
+        // Mais funções se necessarias ....
+    }
+```
+
+A API trabalha com o **PDO** para acesso e manipulação a banco de dados, para facilitar foi criado uma classe para sempre retornar a instancia do PDO.
+
+```php
+    class MySqlPDO{
+        public static function getInstance(){
+            // Gera e retorna a instancia com o banco de dados
+        }
+    }
+```
+
+Para utilizar essa classe nos seus arquivos de Acesso a Dados é bem simples seque exemplo.
+
+```php
+<?php
+    //Não esquecer no namespace
+    // Não esquecer de importar a classe
+
+    class ProdutoDAO{
+        public function insert(Produto $produto){
+            // Pegando a instancia do PDO
+            $pdo = MySqlPDO::getInstance();
+        }
+
+        public function delete($id){
+            // Seu código para deletar produto aqui ....
+        }
+
+        // Mais funções se necessarias ....
+    }
+```
+
+Eles podem retornar os dados para o service chamais mais funções.
+
+## Utils
+
+Dentro da pasta **util** temos a classe **MessagensUtil** que contem varias mensagens de retorno da API para auxilias
+
+```php
+<?php
+
+    namespace Api\util;
+
+    class MensagensUtil{}
+```
+
+FIM

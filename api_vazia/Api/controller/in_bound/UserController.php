@@ -23,7 +23,8 @@
             $json = json_decode($requestValue, TRUE);
 
             $userService = new UserService();
-            $userService->cadastrar($json);
+            return $userService->cadastrar($json); 
+                
             // if($parametro1 == "empresa"){
             //     $userService->cadastrarEmpresa($json);
             // }else{

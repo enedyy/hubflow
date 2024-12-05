@@ -92,7 +92,7 @@ const Informacoes = () => {
         });
 
         // const response = await axios.post('http://localhost/tcc2/tcc_Make/hubflow/Backend/api/cadastro.php', 
-          const response = await axios.post('http://192.168.1.216/api_vazia/users', 
+          const response = await axios.post('http://192.168.1.216/hub/hubflow/hubflow/api_vazia/users', 
       JSON.stringify({
         email,
         nome,

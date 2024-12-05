@@ -3,6 +3,7 @@
     namespace Api\service;
 
     use Api\database\mysql\dao\UserDAO;
+    use Api\database\mysql\dao\ClienteDAO;
     use Api\database\mysql\model\User;
     use Api\database\mysql\model\Cliente;
 
@@ -25,28 +26,39 @@
 
             $userDao = new UserDAO();
 
-            // if($user->tipoUsuario == "cliente"){
-            //     $clienteDao = new ClienteDao();
-            //     $clienteDao->inserir($Cliente);
-            //     $user->clienteId = 1;
-            // }//else if(){
+            if($user->tipoUsuario == "cliente"){
+                $clienteDao = new ClienteDao();
+                $Cliente = new Cliente();
+                $Cliente->Nome =$json["nome"];
+                $Cliente->Telefone =$json["tel"];
+                $Cliente->Email =$json["email"];
+                $Cliente->DataNascimento =$json["dataNascimento"];
+                $Cliente->CEP =$json["cep"];
+                $Cliente->Estado =$json["estado"];
+                $Cliente->Cidade =$json["cidade"];
+                $Cliente->Bairro =$json["bairro"];
+                $Cliente->Rua =$json["rua"];
+                $Cliente->Numero =$json["numero"];
+                // $clienteDao->insert($Cliente);
+                $user->clienteId = $clienteDao->insert($Cliente);
+            }else if($user->tipoUsuario == "empresa"){
                 
-            // // }
-
+                
+             }
             $userDao->insert($user);
 
             return [
-            "clienteId" => 1,
-            "empresaId" => 1,
-            "email" => "cliente@teste.com",
-            "nome" => "cliente teste",
-            "tipoUser" => "cliente"
+            "clienteId" => $user->clienteId,
+            "empresaId" => $user->empresaId,
+            "email" => $user->email,
+            "nome" => $json["nome"],
+            "tipoUser" => $user->tipoUsuario
             ];
         }
 
         public function buscarTodos(){
-            $userDAO = new UserDAO();
-            return $userDAO->getAll();
+            $ClienteDAO = new ClienteDAO();
+            return $ClienteDAO->getAll();
         }
 
         public function buscarPorId($id){

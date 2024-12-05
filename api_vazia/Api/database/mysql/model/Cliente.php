@@ -16,7 +16,6 @@
 
         public $CEP;
 
-
         public $Estado;
         public $Cidade;
 

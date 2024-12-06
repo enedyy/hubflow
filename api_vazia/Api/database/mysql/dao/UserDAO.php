@@ -49,6 +49,7 @@
             } catch (\Throwable $th) {
                 //throw $th;
             }
+            exit($sql);
         }
 
         public function insert(User $user){

@@ -117,7 +117,7 @@
             withCredentials: true
         }
     );
-    
+
           console.log("Resposta do servidor:", response.data);
 
           authLogin.getState().login({
@@ -130,6 +130,7 @@
         navigate("/");
         // resetEtapa();
       } catch (err) {
+        console.log();
         console.error("Erro ao criar usuário:", err); 
         if (err.response) {
           console.error("Erro do servidor:", err.response.data);

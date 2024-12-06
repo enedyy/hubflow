@@ -35,6 +35,7 @@
             bairro,
             rua,
             cpf,
+            nomeDono,
             cnpj
     } = authCadastro();
 
@@ -58,7 +59,9 @@
       "bairro",
       "rua",
       "cpf",
-      "cnpj"
+      "cnpj",
+      "nomeDono",    // Adicionar este campo
+      "descricao"   // Adicionar este campo
       ];
 
       campos.forEach((campo) => {
@@ -87,36 +90,40 @@
             cidade,
             bairro,
             rua,
-            cpf,
-            cnpj
+            nomeDono,    // Adicionar este campo
+            cnpj,        // CNPJ -> cnpj
+            cpf,          // CPF -> cpf
+            descricao: ""      // Adicionar este campo
           });
 
-          // const response = await axios.post('http://localhost/tcc2/tcc_Make/hubflow/Backend/api/cadastro.php', 
-            const response = await axios.post('http://172.20.10.5/hub/hubflow/hubflow/api_vazia/users', 
-        JSON.stringify({
-          email,
-          nome,
-          tel,
-          dataNascimento,
-          cep,
-          numero,
-          senha,
-          empresa,
-          user,
-          estado,
-          cidade,
-          bairro,
-          rua,
-          cpf: null,
-          cnpj
-        }),
-        {
+        // const response = await axios.post('http://172.20.10.5/hub/hubflow/hubflow/api_vazia/users', 
+        const response = await axios.post('http://192.168.1.216/hub/hubflow/hubflow/api_vazia/users', 
+          JSON.stringify({
+            email,
+            nome,
+            tel,
+            dataNascimento,
+            cep,
+            numero,
+            senha,
+            empresa,
+            user,
+            estado,
+            cidade,
+            bairro,
+            rua,
+            nomeDono,    // Adicionar este campo
+            cnpj,        // CNPJ -> cnpj
+            cpf,          // CPF -> cpf
+            descricao: ""      // Adicionar este campo
+          }),
+          {
             headers: {
-                'Content-Type': 'application/json'
+              'Content-Type': 'application/json'
             },
             withCredentials: true
-        }
-    );
+          }
+        );
 
           console.log("Resposta do servidor:", response.data);
 
@@ -198,7 +205,7 @@
               </div>
 
               {/* Informações de Endereço */}
-              <div className="flex flex-wrap gap-x-8 gap-y-2.5">
+              <div className="flex flex-wrap vgap-x-8 gap-y-2.5">
                 {/* CEP */}
                 <section className="flex items-center w-2/4 max-sm:w-full gap-2">
                   <Label size="base" color="colorText_Bold">

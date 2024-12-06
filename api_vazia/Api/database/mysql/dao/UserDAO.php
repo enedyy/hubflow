@@ -52,21 +52,21 @@
             exit($sql);
         }
 
-        public function insert(User $user){
+        public function insert(User $user){ // aqui ele prepara para poder madnar pro banco.
             $pdo = MySqlPDO::getInstance();
-
+            
             $email = $user->email;
             $senha = $user->getHashSenha();
             $tipoUsuario = $user->tipoUsuario;
             $clienteId = $user->clienteId ?? "NULL";
             $empresaId = $user->empresaId ?? "NULL";
-            $funcionarioId = $user->funcionarioId ?? "NULL";
+            $funcionarioId = "null";
 
-            $sql = "INSERT INTO usuarios VALUES (null, '$email', '$senha', '$tipoUsuario', $clienteId, $empresaId, $funcionarioId)";
+            $sql = "INSERT INTO usuarios VALUES (null, '$email', '$senha', '$tipoUsuario', $clienteId, $funcionarioId, $empresaId)";
 
             $stmt = $pdo->prepare($sql);
 
-            try {
+            try { // e só no execute que ele realmente envia pro banco.
                 $stmt->execute();
 
             }catch(\PDOException $th) {

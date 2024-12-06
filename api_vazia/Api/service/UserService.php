@@ -20,6 +20,7 @@
             return $json;
         }
         public function cadastrar($json) {
+
             $user = new User();
             $user->email = $json["email"];
             $user->senha = $json["senha"];
@@ -43,6 +44,7 @@
                 $user->clienteId = $clienteDao->insert($Cliente);
             } 
             else if($user->tipoUsuario == "empresa") {
+
                 $empresaDao = new EmpresaDAO();
                 $empresa = new Empresa();
                 $empresa->NomeEmpresa = $json["nome"];
@@ -58,7 +60,9 @@
                 $empresa->Rua = $json["rua"];
                 $empresa->Numero = $json["numero"];
                 $empresa->Descricao = $json["descricao"];
+
                 $user->empresaId = $empresaDao->insert($empresa);
+
             }
             
             $userDao->insert($user);

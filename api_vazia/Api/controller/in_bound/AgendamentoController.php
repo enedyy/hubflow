@@ -3,7 +3,12 @@
 
 
     class AgendamentoController{
-        public function POST($p1 = null, $p2 = null){
+        public function POST(){
+
+            $requestValue = file_get_contents("php://input");
+            $json = json_decode($requestValue, TRUE);
             
+            $agendamentoService = new AgendamentoService();
+            $agendamentoService->agendar($json);
         }
     }

@@ -4,7 +4,7 @@ use Api\controller\Rest;
 use Api\util\MensagensUtil;
 
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: http://localhost:5174");
+header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Credentials: true");
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization');

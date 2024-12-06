@@ -36,15 +36,19 @@ class EmpresaDAO {
         $Numero = $Empresa->Numero;
         $Descricao = $Empresa->Descricao;
 
+
+
         $sql = "INSERT INTO Empresa (NomeEmpresa, NomeDono, Email, Telefone, CNPJ, CPF, CEP, Estado, Cidade, Bairro, Rua, Numero, Descricao) 
                 VALUES ('$NomeEmpresa', '$NomeDono', '$Email', '$Telefone', '$CNPJ', '$CPF', '$CEP', '$Estado', '$Cidade', '$Bairro', '$Rua', '$Numero', '$Descricao')";
 
-        exit($sql);
+        // exit($sql);  
         
         $stmt = $pdo->prepare($sql);
 
         try {
             $stmt->execute();
+
+
             return $pdo->lastInsertId();
         } catch(\PDOException $th) {
             echo "Erro: " . $th->getMessage();  // Melhoria no tratamento de exceções

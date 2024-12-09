@@ -75,12 +75,12 @@ const PerfilEmpresa = () => {
     setIsLoading(true);
     try {
       await axios.put(
-        `https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/${editedService.id}`,
+        `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos/${editedService.id}`,
         {
-          img: editedService.img,
           nome: editedService.nome,
           description: editedService.description,
           value: editedService.value,
+          duracao: editedService.duracao || "01:00:00"
         }
       );
       // Atualize a lista de serviços localmente
@@ -124,7 +124,7 @@ const PerfilEmpresa = () => {
       };
 
       const { data } = await axios.post(
-        "https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/",
+        "http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos",
         newService
       );
       setServices((prevServices) => [...prevServices, data]);
@@ -181,7 +181,7 @@ const PerfilEmpresa = () => {
       };
 
       const { data } = await axios.post(
-        "https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/",
+        "http://192.168.1.216/hub/hubflow/hubflow/api_vazia/funcionarios",
         newFuncionario
       );
       setServices((prevServices) => [...prevServices, data]);
@@ -265,8 +265,8 @@ const PerfilEmpresa = () => {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/servicos/${user.id}`
-        );
+          `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/empresa/${user.id}`
+        );        
         setPerfil(res.data);
       } catch (error) {
         console.log("deu ruim", error);
@@ -278,7 +278,7 @@ const PerfilEmpresa = () => {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          "https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/"
+          `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos/empresa/${user.empresaId}`
         );
         setServices(res.data);
       } catch (error) {

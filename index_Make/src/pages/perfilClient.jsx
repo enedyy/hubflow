@@ -62,7 +62,7 @@ const PerfilClient = () => {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          "https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/"
+          "http://192.168.1.216/hub/hubflow/hubflow/api_vazia/users"
         );
         setServices(res.data);
       } catch (error) {

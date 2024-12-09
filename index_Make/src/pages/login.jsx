@@ -10,6 +10,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Erro from "@/components/componentes/erro";
 import { motion } from "framer-motion";
 import logo from "../assets/logoHubflow.png";
+import Tipo_Usuario from "./cadastro/tipoUsuario";
+import Empresa from "./empresa";
+import Cliente from "./cadastro/cliente";
 
 const Login = () => {
  const [email, setEmail] = useState("");
@@ -67,10 +70,13 @@ const Login = () => {
      if (response?.data) {
        // Atualiza o estado de login com os dados do usuário
        stateLogin(response.data);
-       navigate("/meu-perfil");
+       if (Response?.data){tipoUser: Empresa,
+        navigate("/minha-empresa");}
+
      } else {
-       setErro("Resposta inválida do servidor");
-     }
+      tipoUser: Cliente,
+        navigate("/meu-perfil");}
+     
    } catch (error) {
      if (error.response) {
        // Erro com resposta do servidor

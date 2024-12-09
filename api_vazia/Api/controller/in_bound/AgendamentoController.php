@@ -1,5 +1,5 @@
 <?php
-namespace Api\controller;
+namespace Api\controller\in_bound;
 
 use Api\database\mysql\dao\AgendamentoDAO;
 use Api\database\mysql\model\Agendamento;

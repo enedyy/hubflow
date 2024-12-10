@@ -96,14 +96,16 @@ const Navbar = () => {
               <DropdownMenuItem>
                 <Link
                   to={
-                    user.tipoUser === "empresa" ? "/minha-empresa" : "/meu-perfil"
+                    user.tipoUser === "empresa"
+                      ? "/minha-empresa"
+                      : "/meu-perfil"
                   }
                   className="w-full"
                 >
-                  {user.tipoUser === "cliente" ? "Minha empresa" : "Meu perfil"}
+                  {user.tipoUser === "empresa" ? "Minha empresa" : "Meu perfil"}
                 </Link>
               </DropdownMenuItem>
-              {user.tipoUser === "Empresa" && (
+              {user.tipoUser === "empresa" && (
                 <DropdownMenuItem>
                   <Link to="/agenda" className="w-full">
                     Agenda

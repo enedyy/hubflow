@@ -75,7 +75,7 @@ const PerfilEmpresa = () => {
     setIsLoading(true);
     try {
       await axios.put(
-        `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos/${editedService.id}`,
+        `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos`,
         {
           nome: editedService.nome,
           description: editedService.description,
@@ -122,7 +122,7 @@ const PerfilEmpresa = () => {
         description: createdServices.description,
         value: createdServices.value,
       };
-
+  
       const { data } = await axios.post(
         "http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos",
         newService
@@ -130,7 +130,7 @@ const PerfilEmpresa = () => {
       setServices((prevServices) => [...prevServices, data]);
       setCreatedServices({ img: "", nome: "", description: "", value: "" });
     } catch (error) {
-      console.log("Erro ao atualizar o serviço: ", error);
+      console.log("Erro ao criar o serviço: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -141,13 +141,13 @@ const PerfilEmpresa = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/${serviceId}`
+        `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos}`
       );
       setServices((prevServices) =>
         prevServices.filter((service) => service.id !== serviceId)
       );
     } catch (error) {
-      console.log("Erro ao atualizar o serviço: ", error);
+      console.log("Erro ao deletar o serviço: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -181,7 +181,7 @@ const PerfilEmpresa = () => {
       };
 
       const { data } = await axios.post(
-        "http://192.168.1.216/hub/hubflow/hubflow/api_vazia/funcionarios",
+        "http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos/empresa/{empresaId}",
         newFuncionario
       );
       setServices((prevServices) => [...prevServices, data]);
@@ -192,7 +192,7 @@ const PerfilEmpresa = () => {
         function: "",
       });
     } catch (error) {
-      console.log("Erro ao atualizar o serviço: ", error);
+      console.log("Erro ao adicionar o funcionario: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -232,7 +232,7 @@ const PerfilEmpresa = () => {
         )
       );
     } catch (error) {
-      console.log("Erro ao atualizar o serviço: ", error);
+      console.log("Erro ao atualizar o funcionario: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -243,14 +243,14 @@ const PerfilEmpresa = () => {
     setIsLoading(true);
     try {
       await axios.delete(
-        `https://66d3463e184dce1713cfc9ba.mockapi.io/usuario/services/${funcioId}`
+        `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos`
       );
       // ALTERAR PARA ESTADO DOS SERVICOS
       setServices((prevServices) =>
         prevServices.filter((service) => service.id !== funcioId)
       );
     } catch (error) {
-      console.log("Erro ao atualizar o serviço: ", error);
+      console.log("Erro ao deletar o funcionario: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -265,7 +265,7 @@ const PerfilEmpresa = () => {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/empresa/${user.id}`
+          `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/empresa`
         );        
         setPerfil(res.data);
       } catch (error) {
@@ -278,7 +278,7 @@ const PerfilEmpresa = () => {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos/empresa/${user.empresaId}`
+          `http://192.168.1.216/hub/hubflow/hubflow/api_vazia/servicos`
         );
         setServices(res.data);
       } catch (error) {

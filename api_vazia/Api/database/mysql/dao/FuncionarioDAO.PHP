@@ -19,6 +19,19 @@ class FuncionarioDAO {
         }
     }
 
+    public function getById($id) {
+        $pdo = MySqlPDO::getInstance();
+        $sql = "SELECT * FROM Funcionarios WHERE FuncionarioID = :id";
+        $stmt = $pdo->prepare($sql);
+
+        try {
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(\PDOException $e) {
+            echo "Erro: " . $e->getMessage();
+        }
+    }
+
     public function getByEmpresa($empresaId) {
         $pdo = MySqlPDO::getInstance();
         $sql = "SELECT * FROM Funcionarios WHERE EmpresaID = :empresaId";
@@ -35,8 +48,8 @@ class FuncionarioDAO {
     public function insert(Funcionario $funcionario) {
         $pdo = MySqlPDO::getInstance();
 
-        $sql = "INSERT INTO Funcionarios (Nome, Cargo, Salario, DataContratacao, EmpresaID) 
-                VALUES (:Nome, :Cargo, :Salario, :DataContratacao, :EmpresaID)";
+        $sql = "INSERT INTO Funcionarios (Nome, Cargo, Salario, DataContratacao, EmpresaID, Imagem, Descricao) 
+                VALUES (:Nome, :Cargo, :Salario, :DataContratacao, :EmpresaID, :Imagem, :Descricao)";
         
         $stmt = $pdo->prepare($sql);
 
@@ -44,9 +57,11 @@ class FuncionarioDAO {
             $stmt->execute([
                 ':Nome' => $funcionario->Nome,
                 ':Cargo' => $funcionario->Cargo,
+                ':Descricao' => $funcionario->Descricao,
                 ':Salario' => $funcionario->Salario,
                 ':DataContratacao' => $funcionario->DataContratacao,
-                ':EmpresaID' => $funcionario->EmpresaID
+                ':Imagem' => $funcionario->Imagem,
+                ':EmpresaID' => $funcionario->EmpresaID          
             ]);
             return $pdo->lastInsertId();
         } catch(\PDOException $th) {
@@ -60,7 +75,9 @@ class FuncionarioDAO {
         $sql = "UPDATE Funcionarios 
                 SET Nome = :Nome, 
                     Cargo = :Cargo, 
-                    Salario = :Salario 
+                    Salario = :Salario,
+                    Imagem = :Imagem,
+                    Descricao = :Descricao 
                 WHERE FuncionarioID = :FuncionarioID";
         
         $stmt = $pdo->prepare($sql);
@@ -70,7 +87,9 @@ class FuncionarioDAO {
                 ':FuncionarioID' => $funcionario->FuncionarioID,
                 ':Nome' => $funcionario->Nome,
                 ':Cargo' => $funcionario->Cargo,
-                ':Salario' => $funcionario->Salario
+                ':Salario' => $funcionario->Salario,
+                ':Imagem' => $funcionario->Imagem,
+                ':Descricao' => $funcionario->Descricao
             ]);
         } catch(\PDOException $th) {
             var_dump($th->getMessage());

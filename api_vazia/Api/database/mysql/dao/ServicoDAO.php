@@ -19,6 +19,19 @@ class ServicoDAO {
         }
     }
 
+    public function getById($id) {
+        $pdo = MySqlPDO::getInstance();
+        $sql = "SELECT * FROM Servicos WHERE ServicoID = :id";
+        $stmt = $pdo->prepare($sql);
+
+        try {
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(\PDOException $e) {
+            echo "Erro: " . $e->getMessage();
+        }
+    }
+
     public function getByEmpresa($empresaId) {
         $pdo = MySqlPDO::getInstance();
         $sql = "SELECT * FROM Servicos WHERE EmpresaID = :empresaId";

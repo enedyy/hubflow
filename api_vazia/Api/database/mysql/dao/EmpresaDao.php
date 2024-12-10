@@ -5,7 +5,7 @@ use Api\database\mysql\model\Empresa;
 use Api\database\mysql\MySqlPDO;
 use PDO;
 
-class EmpresaDAO {
+class EmpresaDao{
     public function getAll() {
         $pdo = MySqlPDO::getInstance();
         $sql = "SELECT * FROM Empresa";

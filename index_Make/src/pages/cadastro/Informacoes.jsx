@@ -35,7 +35,6 @@
             bairro,
             rua,
             cpf,
-            nomeDono,
             cnpj
     } = authCadastro();
 
@@ -60,7 +59,6 @@
       "rua",
       "cpf",
       "cnpj",
-      "nomeDono",    // Adicionar este campo
       "descricao"   // Adicionar este campo
       ];
 
@@ -90,7 +88,6 @@
             cidade,
             bairro,
             rua,
-            nomeDono,    // Adicionar este campo
             cnpj,        // CNPJ -> cnpj
             cpf,          // CPF -> cpf
             descricao: ""      // Adicionar este campo
@@ -112,7 +109,6 @@
             cidade,
             bairro,
             rua,
-            nomeDono,    // Adicionar este campo
             cnpj,        // CNPJ -> cnpj
             cpf,          // CPF -> cpf
             descricao: ""      // Adicionar este campo

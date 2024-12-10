@@ -42,7 +42,7 @@ class UserService {
             $empresaDao = new EmpresaDAO();
             $empresa = new Empresa();
             $empresa->NomeEmpresa = $json["nome"];
-            $empresa->NomeDono = $json["nomeDono"];
+            $empresa->NomeDono = $json["nome"]; // Atribuir o mesmo valor de "nome" para "NomeDono"
             $empresa->Email = $json["email"];
             $empresa->Telefone = $json["tel"];
             $empresa->CNPJ = $json["cnpj"];
@@ -54,7 +54,7 @@ class UserService {
             $empresa->Rua = $json["rua"];
             $empresa->Numero = $json["numero"];
             $empresa->Descricao = $json["descricao"];
-
+        
             $user->empresaId = $empresaDao->insert($empresa);
         }
         

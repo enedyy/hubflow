@@ -17,20 +17,14 @@ type AuthStore = {
 export const authLogin = create<AuthStore>((set) => {
   const localUser = localStorage.getItem("user");
 
-  // let user = null;
-  let user = {
-    id: 1,
-    email: "usuario@exemplo.com",
-    nome: "Hubflow Enterprises",
-    tipoUser: "admin"
-  };
-  if (localUser) {
-    try {
-      user = JSON.parse(localUser);
-    } catch (error) {
-      console.error("Erro ao analisar JSON:", error);
-      localStorage.removeItem("user");
-    }
+  let user = null;
+    if (localUser) {
+     try {
+       user = JSON.parse(localUser);
+     } catch (error) {
+        console.error("Erro ao analisar JSON:", error);
+       localStorage.removeItem("user");
+     }
   }
 
   return {
